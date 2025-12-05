@@ -1,0 +1,110 @@
+
+
+
+<html>
+<head>
+
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+ 
+ <script src="data/gruenflaechen.js"></script>
+ <script src="data/Grundflaeche.js"></script>
+
+ <title> Abgabe Geoinformatik </title>
+ 
+ <style>
+ 
+   h2 {text-align:center; margin:10}
+   Karte {margin: 0 auto}
+  
+ </style>
+ 
+</head>
+
+<body>
+ <h2> Karte der Grünflächen der Goethe-Universität Frankfurt </h2>
+ 
+ 
+ <div id="mapid" style="width: 800px; height: 600px; margin: 0 auto;"> </div>
+ 
+ <script>
+ 
+ var Karte = L.map('mapid').setView([50.1276850, 8.6668482], 5,{animate:true}).setZoom(16);
+ 
+  var osm_basemap = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+	  attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(Karte);
+  
+ var satellit = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+ 
+var X = L.tileLayer('', {attribution: ' ' });
+ 
+ var basemaps = {
+ "Open Street Map DE": osm_basemap,
+ "Satellit": satellit,
+ "Kein Hintergrund" : X 
+  };
+ 
+var overlay_Gruenflaechen = L.geoJSON(gruen, {
+  style: function(feature) {  // ← muss "feature" heißen!
+    switch(feature.properties.Kategorie) {
+      case 'Sukzessionsflächen': 
+        return {color: 'darkgreen', fillColor: 'darkgreen', stroke: false, fillOpacity: 0.8};
+      case 'Wiesen': 
+        return {color: 'lightgreen', fillColor: 'lightgreen', stroke: false, fillOpacity: 0.8};
+	 case 'Hecken': 
+        return {color: 'green', fillColor: 'green', stroke: false, fillOpacity: 0.8};	
+	  case 'Gebüsche': 
+        return {color: 'brown', fillColor: 'brown', stroke: false, fillOpacity: 0.8};	
+	  case 'Dachbegrünung': 
+        return {color: '#C4A484', fillColor: '#C4A484', stroke: false, fillOpacity: 0.8};
+	  case 'Beete': 
+        return {color: 'lightblue', fillColor: 'lightblue', stroke: false, fillOpacity: 0.8};
+
+		
+      default: 
+        return {color: 'gray', fillColor: 'lightgray'};
+    }
+  }
+}).addTo(Karte);
+
+var overlay_Grundflaeche = L.geoJSON(grund, {
+  style: function(feature) {
+    return {  // ← fehlte das return!
+      color: 'black', 
+      stroke: true,
+	  fillOpacity:0
+    };
+  }
+}).addTo(Karte);  
+
+ var overlays = {
+ "Grünflächen": overlay_Gruenflaechen,
+ "Grundfläche": overlay_Grundflaeche
+};
+ 
+ 
+var legend = L.control.layers(basemaps, overlays, {collapsed: false, position:"topright"}).addTo(Karte);
+var scale = L.control.scale({maxWidth: 150, metric: true, imperial: false}).addTo(Karte);
+
+
+
+</script>
+ 
+ 
+ 
+</body>
+
+</html>
