@@ -42,7 +42,7 @@
  
  var Karte = L.map('mapid').setView([50.1276850, 8.6668482], 5,{animate:true}).setZoom(16);
  
-  var osm_basemap = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+ var osm_basemap = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
 	  attribution: '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(Karte);
   
@@ -50,7 +50,7 @@
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
  
-var X = L.tileLayer('', {attribution: ' ' });
+ var X = L.tileLayer('', {attribution: ' ' });
  
  var basemaps = {
  "Open Street Map DE": osm_basemap,
@@ -58,6 +58,11 @@ var X = L.tileLayer('', {attribution: ' ' });
  "Kein Hintergrund" : X 
   };
  
+  function popUpFunction(feature, layer) {
+   var popupContent = "<b>Art: </b>"+feature.properties.Kategorie+
+   "<br><b>Campus: </b>"+ feature.properties.Anmerkung;
+   layer.bindPopup(popupContent);
+  }
 
 var overlay_Grundflaeche = L.geoJSON(grund, {
   style: function(feature) {
@@ -65,11 +70,7 @@ var overlay_Grundflaeche = L.geoJSON(grund, {
   }
 }).addTo(Karte);  
 
-  function popUpFunction(feature, layer) {
-   var popupContent = "<b>Art: </b>"+feature.properties.Kategorie+
-   "<br><b>Campus: </b>"+ feature.properties.Anmerkung;
-   layer.bindPopup(popupContent);
-  }
+
 
  var overlay_Gruenflaechen = L.geoJSON(gruen, {
   onEachFeature: popUpFunction,   
