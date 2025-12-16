@@ -87,7 +87,12 @@ var overlay_Grundflaeche = L.geoJSON(grund, {
 }).addTo(Karte);  
 
 
- var overlays = {
+ 
+
+// evtl Kategorien umbennenen, sonst als Zip verschicken
+
+
+var overlays = {
  "Grünflächen": overlay_Gruenflaechen,
  "Grundstücksgrenzen": overlay_Grundflaeche
 };
@@ -108,12 +113,6 @@ var options = {
  };
 
 var ruler = L.control.ruler(options).addTo(Karte);
-
-
-// evtl Kategorien umbennenen, sonst als Zip verschicken
-
-
-
 
 
 </script>
