@@ -87,7 +87,6 @@ var overlay_Grundflaeche = L.geoJSON(grund, {
 }).addTo(Karte);  
 
 
-
  var overlays = {
  "Grünflächen": overlay_Gruenflaechen,
  "Grundstücksgrenzen": overlay_Grundflaeche
@@ -113,27 +112,7 @@ var ruler = L.control.ruler(options).addTo(Karte);
 
 // evtl Kategorien umbennenen, sonst als Zip verschicken
 
- var overlay_Gruenflaechen = L.geoJSON(gruen, {
-  onEachFeature: popUpFunction,   
-  style: function (feature) {
-    switch (feature.properties.Kategorie) {
-      case 'Sukzessionsflächen':
-        return { color: 'darkgreen', fillColor: 'darkgreen', stroke: false, fillOpacity: 0.8 };
-      case 'Wiesen':
-        return { color: 'lightgreen', fillColor: 'lightgreen', stroke: false, fillOpacity: 0.8 };
-      case 'Hecken':
-        return { color: 'green', fillColor: 'green', stroke: false, fillOpacity: 0.8 };
-      case 'Gebüsche':
-        return { color: 'brown', fillColor: 'brown', stroke: false, fillOpacity: 0.8 };
-      case 'Dachbegrünung':
-        return { color: '#C4A484', fillColor: '#C4A484', stroke: false, fillOpacity: 0.8 };
-      case 'Beete':
-        return { color: 'lightblue', fillColor: 'lightblue', stroke: false, fillOpacity: 0.8 };
-      default:
-        return { color: 'gray', fillColor: 'lightgray' };
-    }
-  }
-}).addTo(Karte);
+
 
 
 
