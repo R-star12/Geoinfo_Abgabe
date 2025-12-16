@@ -26,17 +26,33 @@
  <title> Abgabe Geoinformatik </title>
  
  <style>
-    #mapid {margin: 0 auto}
+	html, body {
+	width: 100%;
+	height: 100%;
+	 padding: 0;
+	 margin: 0;
+  }
+ 
+  #overlay-text {
+      position: absolute;
+      top: 10px;
+      left: 90px;
+      max-width: 40%;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 2px 15px;
+      z-index: 1000;
+      font-family: sans-serif;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
   
  </style>
  
 </head>
 
 <body>
- <h2 style="text-align:center; margin:10px"> Karte der Grünflächen der Goethe-Universität Frankfurt </h2>
- 
- 
- <div id="mapid" style="width: 800px; height: 600px; margin: 0 auto;"> </div>
+
+ <div id="overlay-text"> <h2> Karte der Grünflächen der Goethe-Universität Frankfurt</h2> </div>
+ <div id="mapid" style="width: 100%; height: 100%; padding: 0; margin: 0 auto;"> </div>
  
  <script>
  
@@ -72,6 +88,31 @@ var overlay_Grundflaeche = L.geoJSON(grund, {
 
 
 
+ var overlays = {
+ "Grünflächen": overlay_Gruenflaechen,
+ "Grundstücksgrenzen": overlay_Grundflaeche
+};
+ 
+ 
+var legend = L.control.layers(basemaps, overlays, {collapsed: false, position:"topright"}).addTo(Karte);
+var scale = L.control.scale({maxWidth: 150, metric: true, imperial: false}).addTo(Karte);
+
+
+var options = {
+ position: 'bottomleft',
+  lengthUnit: {
+  factor: 1000,   
+  display: "m",
+  decimal:0,
+  label: "Distance"
+  }
+ };
+
+var ruler = L.control.ruler(options).addTo(Karte);
+
+
+// evtl Kategorien umbennenen, sonst als Zip verschicken
+
  var overlay_Gruenflaechen = L.geoJSON(gruen, {
   onEachFeature: popUpFunction,   
   style: function (feature) {
@@ -95,28 +136,6 @@ var overlay_Grundflaeche = L.geoJSON(grund, {
 }).addTo(Karte);
 
 
-
- var overlays = {
- "Grünflächen": overlay_Gruenflaechen,
- "Grundstücksgrenzen": overlay_Grundflaeche
-};
- 
- 
-var legend = L.control.layers(basemaps, overlays, {collapsed: false, position:"topright"}).addTo(Karte);
-var scale = L.control.scale({maxWidth: 150, metric: true, imperial: false}).addTo(Karte);
-
-
-var options = {
- position: 'bottomleft',
-  lengthUnit: {
-  factor: 1000,   
-  display: "m",
-  decimal:0,
-  label: "Distance"
-  }
- };
-
-var ruler = L.control.ruler(options).addTo(Karte);
 
 </script>
  
